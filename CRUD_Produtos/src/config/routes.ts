@@ -12,6 +12,6 @@ routes.get("/", (request, response) => {
 routes.post("/produto/criar", new ProdutoController().create);
 routes.get("/produto/listar", new ProdutoController().list);
 routes.put("/produto/alterar", new ProdutoController().update);
-routes.delete("/produto/deletar", new ProdutoController().delete);
+routes.delete("/produto/deletar/:nome", new ProdutoController().delete);
 
 export { routes };
