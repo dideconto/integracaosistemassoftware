@@ -1,32 +1,29 @@
 import { Produto } from "../models/Produto";
 
-const produtos : Produto[] = [];
+const produtos: Produto[] = [];
+let id = 0;
 
-export class ProdutoRepository{
+export class ProdutoRepository {
+  cadastrar(produto: Produto): Produto[] {
+    id++;
+    produto.id = id;
+    produtos.push(produto);
+    return produtos;
+  }
 
-    create(produto: Produto) : Produto[] {
-        produtos.push(produto);
-        return produtos;
-    }
+  listar(): Produto[] {
+    return produtos;
+  }
 
-    list(): Produto[]{
-        return produtos;
-    }
+  remover(id: number): Produto[] {
+    const index = produtos.findIndex((produto) => produto.id === id);
+    produtos.splice(index, 1);
+    return produtos;
+  }
 
-    remove(nome: string) : Produto[]{
-        const index = 
-            produtos.findIndex((produto) => produto.nome === nome);
-        produtos.splice(index, 1);
-        return produtos;
-    }
-
-    update(produtoAlterado: Produto) : Produto[]{
-        const index = 
-            produtos.findIndex((produto) => produto.nome === produtoAlterado.nome);
-        produtos[index] = produtoAlterado;
-        return produtos;
-    }
-
-
-
+  alterar(produtoAlterado: Produto): Produto[] {
+    const index = produtos.findIndex((produto) => produto.id === produtoAlterado.id);
+    produtos[index] = produtoAlterado;
+    return produtos;
+  }
 }

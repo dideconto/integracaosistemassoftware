@@ -1,6 +1,7 @@
-export interface Produto{
-    nome: String;
-    descricao: String;
-    quantidade: number;
-    preco : number;
+export interface Produto {
+  id: number;
+  nome: String;
+  descricao: String;
+  quantidade: number;
+  preco: number;
 }
