@@ -1,10 +1,14 @@
 import { FolhaPagamento } from "../models/folha-pagamento";
-import mock from "./folhas-mock.json";
 
-const folhas: FolhaPagamento[] = mock;
+const folhas: FolhaPagamento[] = [];
 
 export class FolhaRepository {
-  cadastrar(folha: FolhaPagamento) {}
+  cadastrar(folha: FolhaPagamento) : FolhaPagamento[] {
+    folhas.push(folha);
+    return folhas;
+  }
 
-  listar() {}
+  listar() : FolhaPagamento[] {
+    return folhas;
+  }
 }
