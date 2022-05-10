@@ -11,5 +11,6 @@ routes.get("/", (request, response) => {
 //Folha de Pagamento
 routes.get("/folha/consultar/:cpf/:mes/:ano", new FolhaPagamentoController().consultar);
 routes.get("/folha/listar", new FolhaPagamentoController().listar);
+routes.post("/folha/cadastrar", new FolhaPagamentoController().cadastrar);
 
 export { routes };
