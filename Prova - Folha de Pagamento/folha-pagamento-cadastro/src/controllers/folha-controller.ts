@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Request, Response } from "express";
 import { FolhaPagamento } from "../models/folha-pagamento";
 import { FolhaRepository } from "../repositories/folha-repository.";
@@ -11,9 +12,30 @@ export class FolhaPagamentoController {
     return response.status(201).json(folhas);
   }
 
-  calcular(request: Request, response: Response) {}
+  calcular(request: Request, response: Response) {
+    let folhas: FolhaPagamento[] = folhaRepository.listar();
+
+    //Processar as folhas e enviar para a aplicação B
+    folhas.map((folha) => {
+      folha.bruto = this.calcularSalarioBruto(100,50),
+      folha.irrf = 2;
+      folha.inss = 3;
+      folha.fgts = 4;
+      folha.liquido = 5;
+    });
+
+    axios
+      .post("http://localhost:3334/folha/cadastrar", folhas)
+      .then((res) => {
+        return response.status(200).json(folhas);
+      })
+      .catch((err) => {
+        return response.status(500).json(err);
+      });
+  }
 
   calcularSalarioBruto(horas: number, valor: number): number {
+    console.log("TEste");
     return horas * valor;
   }
  
