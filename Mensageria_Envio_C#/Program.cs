@@ -28,8 +28,7 @@ namespace Mensageria_Envio_C_
 
                     // string mensagem = DateTime.Now.ToString();
                     // string mensagem = "Diogo Steinke Deconto";
-                    // string mensagem = JsonConvert.SerializeObject(m);
-                    
+
                     Mensagem m = new Mensagem
                     {
                         Id = 1,
@@ -37,7 +36,7 @@ namespace Mensageria_Envio_C_
                         CriadoEm = DateTime.Now
                     };
 
-                    string mensagem = m.ToString();
+                    string mensagem = DateTime.Now.ToString();
                     byte[] bytes = Encoding.UTF8.GetBytes(mensagem);
 
                     //Enviar uma mensagem para o RabbitMQ na fila definida
