@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,13 +39,30 @@ namespace Mensageria_Envio_C_
         {
             Task.Run(() =>
             {
+                Dictionary<string, object> args = new Dictionary<string, object>();
+
+                //Dura vinte segundos na fila e é especificado por fila, ou seja, toda a mensagem na fila
+                //vai durar vinte segundos
+                // args.Add("x-message-ttl", 20000);
+
+                //A fila é apagada depois de 20 segundos de ociosidade
+                // args.Add("x-expires", 20000);
+
+                //O rabbitMQ retorna uma exceção quando não conseguir inserir mais mensagens na fila
+                args.Add("x-max-length", 10);
+
                 channel.QueueDeclare(
                     queue: "mensagens",
                     durable: true,
                     exclusive: false,
                     autoDelete: false,
-                    arguments: null
+                    arguments: args
                 );
+
+                // IBasicProperties props = channel.CreateBasicProperties();
+
+                //Dura de dez a vinte segundos na fila e é especificado por mensagem
+                //props.Expiration = new Random().Next(10000, 20000).ToString();
 
                 while (true)
                 {
