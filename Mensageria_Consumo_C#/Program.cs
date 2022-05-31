@@ -40,20 +40,20 @@ namespace Mensageria_Consumo_C_
 
         public static void BuildAndRunWorker(IModel channel, string consumerName)
         {
-            // Task.Run(() =>
-            // {
-            var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += (model, message) =>
+            Task.Run(() =>
             {
-                var body = message.Body.ToArray();
-                var text = Encoding.UTF8.GetString(body);
-                Console.WriteLine($"{consumerName} {text}");
-            };
-            channel.BasicConsume(queue: "mensagens",
-                                autoAck: true,
-                                consumer: consumer);
-            Console.ReadLine();
-            // });
+                var consumer = new EventingBasicConsumer(channel);
+                consumer.Received += (model, message) =>
+                {
+                    var body = message.Body.ToArray();
+                    var text = Encoding.UTF8.GetString(body);
+                    Console.WriteLine($"{consumerName} {text}");
+                };
+                channel.BasicConsume(queue: "mensagens",
+                                    autoAck: true,
+                                    consumer: consumer);
+                Console.ReadLine();
+            });
         }
     }
 }
