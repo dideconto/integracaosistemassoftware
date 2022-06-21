@@ -13,41 +13,39 @@ namespace Mensageria_Envio_API_C_.Controllers
     [Route("api/mensageria")]
     public class MensageriaController : ControllerBase
     {
-        private readonly ConnectionFactory _factory;
+        private readonly IConnection _connection;
+        private readonly IModel _channel;
         private const string FILA = "mensagens";
-        public MensageriaController(){
-            _factory = new ConnectionFactory{
+        public MensageriaController()
+        {
+            ConnectionFactory factory = new ConnectionFactory
+            {
                 HostName = "localhost"
             };
+            _connection = factory.CreateConnection();
+            _channel = _connection.CreateModel();
+            _channel.QueueDeclare(queue: FILA,
+                                 durable: false,
+                                 exclusive: false,
+                                 autoDelete: false,
+                                 arguments: null);
         }
 
         [Route("enviar")]
         [HttpPost]
-        public IActionResult Enviar([FromQuery] string mensagem){
-            using (var connection = _factory.CreateConnection())
-            {
-                using (var channel = connection.CreateModel())
-                {
-                    channel.QueueDeclare(
-                        queue: FILA,
-                        durable: false,
-                        exclusive: false,
-                        autoDelete: false,
-                        arguments: null
-                    );
+        public IActionResult Enviar([FromQuery] string mensagem)
+        {
 
-                    byte[] bytes = Encoding.UTF8.GetBytes(mensagem);
+            byte[] bytes = Encoding.UTF8.GetBytes(mensagem);
 
-                    //Enviar uma mensagem para o RabbitMQ na fila definida
-                    //na propriedade routingKey
-                    channel.BasicPublish(
-                        body: bytes,
-                        routingKey: "mensagens",
-                        basicProperties: null,
-                        exchange: ""
-                    );
-                }
-            }
+            //Enviar uma mensagem para o RabbitMQ na fila definida
+            //na propriedade routingKey
+            _channel.BasicPublish(
+                body: bytes,
+                routingKey: "mensagens",
+                basicProperties: null,
+                exchange: ""
+            );
             return Ok();
         }
     }
